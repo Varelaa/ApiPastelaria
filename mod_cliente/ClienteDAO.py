@@ -4,7 +4,10 @@ from mod_cliente.Cliente import Cliente
 import db
 from mod_cliente.ClienteModel import ClienteDB
 
-router = APIRouter()
+from fastapi import Depends
+import security
+
+router = APIRouter( dependencies=[Depends(security.verify_token), Depends(security.verify_key)] )
 
 # Criar as rotas/endpoints: GET, POST, PUT, DELETE
 @router.get("/cliente/", tags=["Cliente"])
@@ -25,6 +28,7 @@ def get_cliente(id: int):
         session = db.Session() # busca um com filtro
         dados = session.query(ClienteDB).filter(ClienteDB.id_cliente == id).all()
         return dados, 200
+    
     except Exception as e:
         return {"erro": str(e)}, 400
     finally:
@@ -38,7 +42,7 @@ def post_cliente(corpo: Cliente):
         session.add(dados)
         session.commit()
         return {"id": dados.id_cliente}, 200
-
+    
     except Exception as e:
         session.rollback()
         return {"erro": str(e)}, 400
@@ -64,7 +68,7 @@ def put_cliente(id: int, corpo: Cliente):
         session.commit()
 
         return {"id": dados.id_cliente}, 200
-
+    
     except Exception as e:
         session.rollback()
         return {"erro": str(e)}, 400
@@ -79,7 +83,7 @@ def delete_cliente(id: int):
         session.delete(dados)
         session.commit()
         return {"id": dados.id_cliente}, 200
-
+    
     except Exception as e:
         session.rollback()
         return {"erro": str(e)}, 400
