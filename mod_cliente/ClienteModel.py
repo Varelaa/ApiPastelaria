@@ -10,7 +10,7 @@ class ClienteDB(db.Base):
     cpf = Column(CHAR(11),nullable=False)
     telefone = Column(CHAR(11), unique=True, nullable=False)
     compra_fiado = Column(Integer, nullable=False)
-    dia_fiado = Column(Integer(11), nullable=False)
+    dia_fiado = Column(Integer, nullable=False)
     senha = Column(VARCHAR(11), nullable=False)
 
     def __init__(self, id_cliente, nome, cpf, telefone, compra_fiado, dia_fiado, senha):
@@ -21,4 +21,3 @@ class ClienteDB(db.Base):
         self.compra_fiado = compra_fiado
         self.dia_fiado = dia_fiado
         self.senha = senha
-
